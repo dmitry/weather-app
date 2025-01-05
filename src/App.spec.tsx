@@ -70,4 +70,27 @@ test.describe('App', () => {
     await expect(component.locator('text=Loading...')).toBeVisible()
     await expect(component).toHaveScreenshot('loading-state.png')
   })
+
+  test('should persist last searched city across page reloads', async ({ mount, page }) => {
+    const component = await mount(<App />)
+    let lastCity = await page.evaluate(() => localStorage.getItem('lastSearchedCity'))
+    expect(lastCity).toBeNull()
+    await expect(component.locator('text=Berlin')).not.toBeVisible()
+
+    const searchInput = component.locator('input[placeholder="Enter city"]')
+    await searchInput.type('Ber')
+    await expect(component.getByText('Berlin, Germany')).toBeVisible()
+    await searchInput.press('ArrowDown')
+    await searchInput.press('Enter')
+    await expect(component.getByText('Berlin')).toBeVisible()
+
+    lastCity = await page.evaluate(() => localStorage.getItem('lastSearchedCity'))
+    expect(lastCity).toBe('Berlin, Germany')
+
+    await component.unmount()
+    const remountedComponent = await mount(<App />)
+    
+    await expect(remountedComponent.getByText('Berlin, Germany')).toBeVisible()
+    await expect(remountedComponent).toHaveScreenshot('weather-loaded.png', { maxDiffPixelRatio: 0.01, threshold: 0.1})
+  })
 })
