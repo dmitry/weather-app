@@ -11,7 +11,7 @@ Features city search with autocomplete, and responsive design.
 - React 19 + TypeScript
 - Vite for build system
 - Vitest for unit testing
-- Playwright for E2E testing
+- Playwright for E2E component testing
 - Tailwind CSS for styling
 - Vercel for deployment
 
