@@ -15,11 +15,15 @@ interface WeatherData {
   }
 }
 
-interface SelectedLocationProps {
+interface CurrentWeatherProps {
   city: string | null
 }
 
-const SelectedLocation = ({ city }: SelectedLocationProps) => {
+const CurrentWeather = (
+  {
+    city
+  }: CurrentWeatherProps
+) => {
   const [weatherData, setWeatherData] = useState<WeatherData | null>(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -128,4 +132,4 @@ const SelectedLocation = ({ city }: SelectedLocationProps) => {
   )
 }
 
-export default SelectedLocation
+export default CurrentWeather

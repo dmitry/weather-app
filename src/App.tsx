@@ -1,5 +1,5 @@
-import Header from "./molecules/Header"
-import SelectedLocation from "./molecules/SelectedLocation"
+import Header from "./components/features/Header"
+import CurrentWeather from "./components/features/CurrentWeather"
 import {useState} from "react"
 
 const App = () => {
@@ -13,7 +13,7 @@ const App = () => {
         />
 
         <main className="my-8">
-          <SelectedLocation
+          <CurrentWeather
             city={city}
           />
         </main>

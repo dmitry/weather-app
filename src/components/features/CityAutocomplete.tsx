@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from "react"
 import debounce from "lodash/debounce"
-import InputWithSuggestions, { BaseSuggestion } from "../atoms/InputWithSuggestions"
+import InputWithSuggestions, { BaseSuggestion } from "../common/InputWithSuggestions"
 
 interface City extends BaseSuggestion {
   name: string
@@ -13,8 +13,8 @@ interface CityAutocompleteProps {
 }
 
 const CityAutocomplete: React.FC<CityAutocompleteProps> = ({
-                                                             onCitySelected
-                                                           }) => {
+  onCitySelected
+}) => {
   const [query, setQuery] = useState("")
   const [suggestions, setSuggestions] = useState<City[]>([])
   const [loading, setLoading] = useState(false)

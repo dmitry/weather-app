@@ -21,17 +21,17 @@ interface InputWithSuggestionsProps<T extends BaseSuggestion> {
 }
 
 const InputWithSuggestions = <T extends BaseSuggestion>({
-                                                          value,
-                                                          onChange,
-                                                          onSelectSuggestion,
-                                                          onSearch,
-                                                          suggestions,
-                                                          loading,
-                                                          error,
-                                                          placeholder = "Search",
-                                                          renderSuggestion,
-                                                          maxHeight = "10vh"
-                                                        }: InputWithSuggestionsProps<T>) => {
+  value,
+  onChange,
+  onSelectSuggestion,
+  onSearch,
+  suggestions,
+  loading,
+  error,
+  placeholder = "Search",
+  renderSuggestion,
+  maxHeight = "10vh"
+}: InputWithSuggestionsProps<T>) => {
   const [focusedIndex, setFocusedIndex] = useState(-1)
   const [isOpen, setIsOpen] = useState(false)
   const [selectedSuggestion, setSelectedSuggestion] = useState<T | null>(null)

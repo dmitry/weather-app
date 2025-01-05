@@ -8,6 +8,7 @@ export default defineConfig({
   test: {
     globals: true,
     environment: "jsdom",
+    include: ['**/*.test.tsx'],
     setupFiles: ["./src/test/setup.ts"],
   },
 } as ViteConfig)
