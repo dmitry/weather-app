@@ -1,0 +1,7 @@
+{
+  "placeholder": "Stadt eingeben",
+  "error": {
+    "fetchSuggestions": "Fehler beim Abrufen der Stadtvorschläge",
+    "fetch": "Fehler beim Abrufen der Vorschläge"
+  }
+}

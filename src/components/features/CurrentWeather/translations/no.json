@@ -1,0 +1,9 @@
+{
+  "selectCity": "Vennligst velg en by for å se værinformasjon",
+  "loading": "Laster værdata for {{city}}...",
+  "error": "Kunne ikke hente værmelding for {{city}}",
+  "humidity": "Luftfuktighet",
+  "wind": "Vind",
+  "uvIndex": "UV-indeks",
+  "cloudCover": "Skydekke"
+}

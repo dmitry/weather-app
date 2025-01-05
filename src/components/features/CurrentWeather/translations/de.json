@@ -1,0 +1,9 @@
+{
+  "selectCity": "Bitte wählen Sie eine Stadt aus, um Wetterinformationen zu sehen",
+  "loading": "Lade Wetterdaten für {{city}}...",
+  "error": "Fehler beim Laden der Wettervorhersage für {{city}}",
+  "humidity": "Luftfeuchtigkeit",
+  "wind": "Wind",
+  "uvIndex": "UV-Index",
+  "cloudCover": "Bewölkung"
+}

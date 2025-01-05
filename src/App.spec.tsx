@@ -1,10 +1,13 @@
 import { test, expect } from '@playwright/experimental-ct-react'
+import { TestWrapper } from './test/utils'
 import App from './App'
 
 test.describe('App', () => {
-  test('visual regression test for different states', async ({ mount }) => {
+  test.only('visual regression test for different states', async ({ mount }) => {
     const component = await mount(
-      <App />
+      <TestWrapper>
+        <App />
+      </TestWrapper>
     )
 
     await expect(component).toHaveScreenshot('weather-initial.png')

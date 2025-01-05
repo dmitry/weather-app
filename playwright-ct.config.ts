@@ -1,6 +1,7 @@
 import { defineConfig, devices } from "@playwright/experimental-ct-react"
 import tailwindcss from "tailwindcss"
 import autoprefixer from "autoprefixer"
+import path from "path"
 
 /**
  * See https://playwright.dev/docs/test-configuration.
@@ -19,6 +20,21 @@ export default defineConfig({
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     ctViteConfig: {
+      resolve: {
+        alias: {
+          "@": path.resolve("./src")
+        },
+      },
+      // Add this to include json files and handle glob imports
+      assetsInclude: ['**/*.json'],
+      // build: {
+      //   rollupOptions: {
+      //     input: {
+      //       // Include your translation files
+      //       translations: './components/**/translations/*.json'
+      //     }
+      //   }
+      // },
       css: {
         postcss: {
           plugins: [

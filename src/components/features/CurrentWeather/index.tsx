@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react"
 import { Droplets, Wind, Sun, Cloud } from "lucide-react"
+import {useComponentTranslation} from "@/hooks/useComponentTranslation"
 
 interface WeatherData {
   current: {
@@ -19,7 +20,7 @@ interface CurrentWeatherProps {
   city: string | null
 }
 
-const CurrentWeather = (
+const Component = (
   {
     city
   }: CurrentWeatherProps
@@ -27,6 +28,7 @@ const CurrentWeather = (
   const [weatherData, setWeatherData] = useState<WeatherData | null>(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const { t, isLoading } = useComponentTranslation('features/CurrentWeather')
 
   useEffect(() => {
     const fetchWeatherData = async () => {
@@ -41,14 +43,14 @@ const CurrentWeather = (
         )
 
         if (!response.ok) {
-          throw new Error("Failed to fetch weather data")
+          throw new Error(t("error.fetching"))
         }
 
         const data = await response.json()
 
         setWeatherData(data)
       } catch (err) {
-        setError(err instanceof Error ? err.message : "Failed to get current forecast")
+        setError(err instanceof Error ? err.message : t("error.fetching"))
       } finally {
         setLoading(false)
       }
@@ -57,10 +59,12 @@ const CurrentWeather = (
     fetchWeatherData()
   }, [city])
 
+  if (isLoading) return null
+
   if (!city) {
     return (
       <div className="text-center py-8">
-        <p className="text-gray-600">Please select a city to see weather information</p>
+        <p className="text-gray-600">{t('selectCity')}</p>
       </div>
     )
   }
@@ -68,18 +72,20 @@ const CurrentWeather = (
   if (loading) {
     return (
       <div className="text-center py-8">
-        <p className="text-gray-600">Loading weather data for {city}...</p>
+        <p className="text-gray-600">{t('loading', { city })}</p>
       </div>
     )
   }
 
-  if (error || !weatherData) {
+  if (error) {
     return (
       <div className="text-center py-8">
-        <p className="text-gray-600">Failed to get current forecast for {city}</p>
+        <p className="text-gray-600">{t('error', { city })}</p>
       </div>
     )
   }
+
+  if (!weatherData) return null
 
   const iconSrc = weatherData.current.condition.icon.replace("64x64", "128x128")
 
@@ -105,31 +111,31 @@ const CurrentWeather = (
           </div>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 w-full max-w-3xl">
-          <div className="bg-white p-4 rounded-lg shadow-sm text-center">
-            <Droplets className="mx-auto mb-2" size={24} />
-            <div className="text-sm text-gray-600">Humidity</div>
-            <div className="font-medium">{weatherData.current.humidity}%</div>
-          </div>
-          <div className="bg-white p-4 rounded-lg shadow-sm text-center">
-            <Wind className="mx-auto mb-2" size={24} />
-            <div className="text-sm text-gray-600">Wind</div>
-            <div className="font-medium">{Math.round(weatherData.current.wind_kph)} km/h</div>
-          </div>
-          <div className="bg-white p-4 rounded-lg shadow-sm text-center">
-            <Sun className="mx-auto mb-2" size={24} />
-            <div className="text-sm text-gray-600">UV Index</div>
-            <div className="font-medium">{weatherData.current.uv}</div>
-          </div>
-          <div className="bg-white p-4 rounded-lg shadow-sm text-center">
-            <Cloud className="mx-auto mb-2" size={24} />
-            <div className="text-sm text-gray-600">Cloud Cover</div>
-            <div className="font-medium">{weatherData.current.cloud}%</div>
-          </div>
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 w-full max-w-3xl">
+        <div className="bg-white p-4 rounded-lg shadow-sm text-center">
+          <Droplets className="mx-auto mb-2" size={24} />
+          <div className="text-sm text-gray-600">{t('humidity')}</div>
+          <div className="font-medium">{weatherData.current.humidity}%</div>
+        </div>
+        <div className="bg-white p-4 rounded-lg shadow-sm text-center">
+          <Wind className="mx-auto mb-2" size={24} />
+          <div className="text-sm text-gray-600">{t('wind')}</div>
+          <div className="font-medium">{Math.round(weatherData.current.wind_kph)} km/h</div>
+        </div>
+        <div className="bg-white p-4 rounded-lg shadow-sm text-center">
+          <Sun className="mx-auto mb-2" size={24} />
+          <div className="text-sm text-gray-600">{t('uvIndex')}</div>
+          <div className="font-medium">{weatherData.current.uv}</div>
+        </div>
+        <div className="bg-white p-4 rounded-lg shadow-sm text-center">
+          <Cloud className="mx-auto mb-2" size={24} />
+          <div className="text-sm text-gray-600">{t('cloudCover')}</div>
+          <div className="font-medium">{weatherData.current.cloud}%</div>
         </div>
       </div>
     </div>
+  </div>
   )
 }
 
-export default CurrentWeather
+export default Component

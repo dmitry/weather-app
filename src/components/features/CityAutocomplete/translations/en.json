@@ -1,0 +1,7 @@
+{
+  "placeholder": "Enter city",
+  "error": {
+    "fetchSuggestions": "Error fetching city suggestions",
+    "fetch": "Failed to fetch suggestions"
+  }
+}

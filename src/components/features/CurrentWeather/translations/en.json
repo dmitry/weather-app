@@ -1,0 +1,9 @@
+{
+  "selectCity": "Please select a city to see weather information",
+  "loading": "Loading weather data for {{city}}...",
+  "error": "Failed to get current forecast for {{city}}",
+  "humidity": "Humidity",
+  "wind": "Wind",
+  "uvIndex": "UV Index",
+  "cloudCover": "Cloud Cover"
+}

@@ -1,5 +1,7 @@
 import React, { useState, useRef, useEffect } from "react"
 import { Search } from "lucide-react"
+import { useComponentTranslation } from "@/hooks/useComponentTranslation"
+
 
 export interface BaseSuggestion {
   id: string
@@ -20,6 +22,7 @@ interface InputWithSuggestionsProps<T extends BaseSuggestion> {
   maxHeight?: string
 }
 
+
 const InputWithSuggestions = <T extends BaseSuggestion>({
   value,
   onChange,
@@ -37,6 +40,9 @@ const InputWithSuggestions = <T extends BaseSuggestion>({
   const [selectedSuggestion, setSelectedSuggestion] = useState<T | null>(null)
   const suggestionsRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
+
+  const { t, isLoading } = useComponentTranslation('common/InputWithSuggestions')
+
 
   useEffect(() => {
     setFocusedIndex(-1)
@@ -135,12 +141,14 @@ const InputWithSuggestions = <T extends BaseSuggestion>({
     }
   }, [])
 
+  if (isLoading) return <div>Loading...</div>
+
   return (
     <div className="relative w-full lg:w-auto lg:min-w-[320px]">
       <input
         ref={inputRef}
         type="text"
-        placeholder={placeholder}
+        placeholder={placeholder || t('placeholder')}
         value={value}
         onChange={handleInputChange}
         onKeyDown={handleKeyDown}
@@ -178,7 +186,7 @@ const InputWithSuggestions = <T extends BaseSuggestion>({
 
       {loading && (
         <div className="absolute z-10 w-full mt-1 p-3 bg-white rounded-lg shadow-lg border border-gray-200 text-gray-500">
-          Loading...
+          {t('loading')}
         </div>
       )}
 

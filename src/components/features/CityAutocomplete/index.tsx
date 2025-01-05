@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from "react"
 import debounce from "lodash/debounce"
-import InputWithSuggestions, { BaseSuggestion } from "../common/InputWithSuggestions"
+import InputWithSuggestions, { BaseSuggestion } from "@/components/common/InputWithSuggestions"
+import {useComponentTranslation} from "@/hooks/useComponentTranslation"
 
 interface City extends BaseSuggestion {
   name: string
@@ -12,13 +13,14 @@ interface CityAutocompleteProps {
   onCitySelected: (city: string) => void
 }
 
-const CityAutocomplete: React.FC<CityAutocompleteProps> = ({
+const Component: React.FC<CityAutocompleteProps> = ({
   onCitySelected
 }) => {
   const [query, setQuery] = useState("")
   const [suggestions, setSuggestions] = useState<City[]>([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
+  const { t, isLoading } = useComponentTranslation('features/CityAutocomplete')
 
   const searchCity = async (searchQuery: string) => {
     if (searchQuery.length < 2) {
@@ -89,6 +91,8 @@ const CityAutocomplete: React.FC<CityAutocompleteProps> = ({
     </div>
   )
 
+  if (isLoading) return null
+
   return (
     <div className="w-full max-w-md mx-auto">
       <InputWithSuggestions<City>
@@ -99,7 +103,7 @@ const CityAutocomplete: React.FC<CityAutocompleteProps> = ({
         suggestions={suggestions}
         loading={loading}
         error={error}
-        placeholder="Enter city"
+        placeholder={t('placeholder')}
         renderSuggestion={renderSuggestion}
         maxHeight="60vh"
       />
@@ -107,4 +111,4 @@ const CityAutocomplete: React.FC<CityAutocompleteProps> = ({
   )
 }
 
-export default CityAutocomplete
+export default Component
