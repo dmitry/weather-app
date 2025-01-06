@@ -1,11 +1,26 @@
-import { PropsWithChildren } from 'react'
 import { useWeather } from '../../../hooks/useWeather'
 
+interface WeatherRenderProps {
+  weatherData: {
+    current: {
+      temp_c: number
+      humidity: number
+      wind_kph: number
+      uv: number
+      cloud: number
+      condition: {
+        icon: string
+        text: string
+      }
+    }
+  }
+}
 interface BaseWeatherProps {
-  city: string | null
+  city: string | null;
+  children: (props: WeatherRenderProps) => JSX.Element;
 }
 
-export const BaseWeather = ({ city, children }: PropsWithChildren<BaseWeatherProps>) => {
+export const BaseWeather = ({ city, children }: BaseWeatherProps) => {
   const { weatherData, loading, error } = useWeather(city)
 
   if (!city) {

@@ -1,10 +1,6 @@
 import { BaseWeather } from './Base'
 
-interface CompactWeatherProps {
-  city: string | null
-}
-
-export const CompactWeather = ({ city }: CompactWeatherProps) => {
+export const CompactWeather = ({ city }: { city: string | null }) => {
   return (
     <BaseWeather city={city}>
       {({ weatherData }) => {
