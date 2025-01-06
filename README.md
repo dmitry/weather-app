@@ -23,6 +23,8 @@ Features city search with autocomplete, and responsive design.
   - Keyboard navigation support
   - Search using OpenWeatherMap's geo database
 - Last searched city loads automatically on startup
+- Last 4 searched cities saved and displayed
+- Auto-detects user location on first visit via IP
 - Display current weather conditions using Open-Meteo API
   - Temperature (only °C at the moment)
   - Humidity percentage
