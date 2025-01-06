@@ -1,7 +1,7 @@
 import Header from "./components/features/Header"
 import { FullWeather } from "./components/features/Weather/Full"
 import { CompactWeather } from "./components/features/Weather/Compact"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 
 const MAX_HISTORY = 4
 
@@ -19,6 +19,24 @@ const App = () => {
       return newCities
     })
   }
+
+  useEffect(() => {
+    const loadLocationByIP = async () => {
+      if (cities.length > 0) return
+
+      try {
+        const response = await fetch(
+          `https://api.weatherapi.com/v1/current.json?key=075bcd2d07ac4f97ac792648250501&q=auto:ip`
+        )
+        const data = await response.json()
+        handleCitySelected(`${data.location.name}, ${data.location.country}`)
+      } catch (error) {
+        console.error('Failed to get location:', error)
+      }
+    }
+
+    loadLocationByIP()
+  }, [cities.length])
 
   return (
     <div className="min-h-screen bg-gray-100">
