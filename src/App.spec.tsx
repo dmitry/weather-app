@@ -73,8 +73,8 @@ test.describe('App', () => {
 
   test('should persist last searched city across page reloads', async ({ mount, page }) => {
     const component = await mount(<App />)
-    let lastCity = await page.evaluate(() => localStorage.getItem('lastSearchedCity'))
-    expect(lastCity).toBeNull()
+    let searchedCities = await page.evaluate(() => JSON.parse(localStorage.getItem('searchedCities') || '[]'))
+    expect(searchedCities).toEqual([])
     await expect(component.locator('text=Berlin')).not.toBeVisible()
 
     const searchInput = component.locator('input[placeholder="Enter city"]')
@@ -84,13 +84,49 @@ test.describe('App', () => {
     await searchInput.press('Enter')
     await expect(component.getByText('Berlin')).toBeVisible()
 
-    lastCity = await page.evaluate(() => localStorage.getItem('lastSearchedCity'))
-    expect(lastCity).toBe('Berlin, Germany')
+    searchedCities = await page.evaluate(() => JSON.parse(localStorage.getItem('searchedCities') || '[]'))
+    expect(searchedCities.length).toEqual(2)
+    expect(searchedCities[0]).toEqual('Berlin, Germany')
 
     await component.unmount()
     const remountedComponent = await mount(<App />)
     
     await expect(remountedComponent.getByText('Berlin, Germany')).toBeVisible()
     await expect(remountedComponent).toHaveScreenshot('weather-loaded.png', { maxDiffPixelRatio: 0.01, threshold: 0.1})
+  })
+
+  test.describe('recently searched cities', () => {
+    test('shows section and allow selection', async ({ mount, page }) => {
+      const component = await mount(<App />)
+      const searchInput = component.locator('input[placeholder="Enter city"]')
+
+      const cities = ['Berlin, Germany', 'Paris, France', 'Oslo, Norway']
+
+      for (const city of cities) {
+        await searchInput.fill('')
+        await searchInput.type(city.split(',')[0])
+
+        await component.getByText(city).click()
+      }
+
+      await expect(component.getByText('Recently Searched Cities')).toBeVisible()
+
+      let recentCities = component.locator('.grid').first()
+      await expect(recentCities.getByText('Paris, France')).toBeVisible()
+
+      await recentCities.getByText('Berlin, Germany').click()
+      await expect(component.locator('h2').first()).toContainText('Berlin, Germany')
+
+      await expect(component.getByText('Oslo, Norway')).toBeVisible()
+      let searchedCities = await page.evaluate(() => JSON.parse(localStorage.getItem('searchedCities') || '[]'))
+      expect(searchedCities.length).toEqual(4)
+      expect(searchedCities.slice(0, 3)).toEqual(
+        [
+          'Berlin, Germany',
+          'Oslo, Norway',
+          'Paris, France'
+        ]
+      )
+    })
   })
 })
